@@ -1,17 +1,21 @@
 //! A simple, correct TOTP library.
 
+use core::clone::Clone;
+use core::default::Default;
+use digest::{BlockInput, FixedOutputDirty, Reset, Update};
 use hmac::{Hmac, Mac, NewMac};
-use sha2::Sha512;
+pub use sha2::Sha512;
 
 // TODO Make `no-std`!
 
 const STEP: u64 = 30; // 30 seconds.
 
-type Hmac512 = Hmac<Sha512>;
-
-pub fn totp(digits: u32, secret: &[u8], time: u64) -> String {
+pub fn totp<H>(digits: u32, secret: &[u8], time: u64) -> String
+where
+    H: Update + BlockInput + Reset + FixedOutputDirty + Clone + Default,
+{
     // Hash the secret and the time together.
-    let mut mac = Hmac512::new_varkey(secret).unwrap();
+    let mut mac: Hmac<H> = Hmac::new_varkey(secret).unwrap();
     mac.update(&to_bytes(time_factor(time)));
     let hash: &[u8] = &mac.finalize().into_bytes();
 
@@ -59,10 +63,10 @@ mod tests {
     fn totp_tests() {
         let secret: &[u8] = b"1234567890123456789012345678901234567890123456789012345678901234";
         assert_eq!(64, secret.len());
-        assert_eq!("90693936", totp(8, secret, 59));
-        assert_eq!("25091201", totp(8, secret, 1111111109));
-        assert_eq!("93441116", totp(8, secret, 1234567890));
-        assert_eq!("38618901", totp(8, secret, 2000000000));
-        assert_eq!("47863826", totp(8, secret, 20000000000));
+        assert_eq!("90693936", totp::<Sha512>(8, secret, 59));
+        assert_eq!("25091201", totp::<Sha512>(8, secret, 1111111109));
+        assert_eq!("93441116", totp::<Sha512>(8, secret, 1234567890));
+        assert_eq!("38618901", totp::<Sha512>(8, secret, 2000000000));
+        assert_eq!("47863826", totp::<Sha512>(8, secret, 20000000000));
     }
 }
