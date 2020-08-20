@@ -4,12 +4,13 @@ use core::clone::Clone;
 use core::default::Default;
 use digest::{BlockInput, FixedOutputDirty, Reset, Update};
 use hmac::{Hmac, Mac, NewMac};
-pub use sha2::Sha512;
+pub use sha2::{Sha256, Sha512};
 
 // TODO Make `no-std`!
 
 const STEP: u64 = 30; // 30 seconds.
 
+/// Produce a Time-based One-time Password with default settings.
 pub fn totp<H>(digits: u32, secret: &[u8], time: u64) -> String
 where
     H: Update + BlockInput + Reset + FixedOutputDirty + Clone + Default,
@@ -60,13 +61,38 @@ mod tests {
     }
 
     #[test]
-    fn totp_tests() {
+    fn totp256_tests() {
+        let secret: &[u8] = b"12345678901234567890123456789012";
+        assert_eq!(32, secret.len());
+
+        let pairs = vec![
+            ("46119246", 59),
+            ("68084774", 1111111109),
+            ("91819424", 1234567890),
+            ("90698825", 2000000000),
+            ("77737706", 20000000000),
+        ];
+
+        pairs.into_iter().for_each(|(expected, time)| {
+            assert_eq!(expected, totp::<Sha256>(8, secret, time));
+        });
+    }
+
+    #[test]
+    fn totp512_tests() {
         let secret: &[u8] = b"1234567890123456789012345678901234567890123456789012345678901234";
         assert_eq!(64, secret.len());
-        assert_eq!("90693936", totp::<Sha512>(8, secret, 59));
-        assert_eq!("25091201", totp::<Sha512>(8, secret, 1111111109));
-        assert_eq!("93441116", totp::<Sha512>(8, secret, 1234567890));
-        assert_eq!("38618901", totp::<Sha512>(8, secret, 2000000000));
-        assert_eq!("47863826", totp::<Sha512>(8, secret, 20000000000));
+
+        let pairs = vec![
+            ("90693936", 59),
+            ("25091201", 1111111109),
+            ("93441116", 1234567890),
+            ("38618901", 2000000000),
+            ("47863826", 20000000000),
+        ];
+
+        pairs.into_iter().for_each(|(expected, time)| {
+            assert_eq!(expected, totp::<Sha512>(8, secret, time));
+        });
     }
 }
