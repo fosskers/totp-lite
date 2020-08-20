@@ -57,7 +57,22 @@ pub const DEFAULT_DIGITS: u32 = 8;
 
 /// Produce a Time-based One-time Password with default settings.
 ///
+/// ```
+/// use std::time::{SystemTime, UNIX_EPOCH};
+/// use totp_lite::{totp, Sha512};
 ///
+/// // Negotiated between you and the authenticating service.
+/// let password: &[u8] = b"secret";
+///
+/// // The number of seconds since the Unix Epoch.
+/// let seconds: u64 = SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs();
+///
+/// // Specify the desired Hash algorithm via a type parameter.
+/// // `Sha1` and `Sha256` are also available.
+/// let result: String = totp::<Sha512>(password, seconds);
+/// assert_eq!(8, result.len());
+/// assert_eq!("71788658", totp::<Sha512>(password, 1234567890)); // 2009 February 13.
+/// ```
 pub fn totp<H>(secret: &[u8], time: u64) -> String
 where
     H: Update + BlockInput + Reset + FixedOutputDirty + Clone + Default,
@@ -66,6 +81,21 @@ where
 }
 
 /// Produce a Time-based One-time Password with full control over algorithm parameters.
+///
+/// ```
+/// use std::time::{SystemTime, UNIX_EPOCH};
+/// use totp_lite::{totp_custom, Sha512, DEFAULT_STEP};
+///
+/// // Negotiated between you and the authenticating service.
+/// let password: &[u8] = b"secret";
+///
+/// // The number of seconds since the Unix Epoch.
+/// let seconds: u64 = SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs();
+///
+/// // Uses the default step of 30 seconds, but asks for 10 result digits instead.
+/// let result: String = totp_custom::<Sha512>(DEFAULT_STEP, 10, password, seconds);
+/// assert_eq!(10, result.len());
+/// ```
 pub fn totp_custom<H>(step: u64, digits: u32, secret: &[u8], time: u64) -> String
 where
     H: Update + BlockInput + Reset + FixedOutputDirty + Clone + Default,
