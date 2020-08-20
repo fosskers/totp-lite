@@ -1,0 +1,9 @@
+[package]
+name = "totp-lite"
+version = "1.0.0"
+authors = ["Colin Woodbury <colin@fosskers.ca>"]
+edition = "2018"
+
+[dependencies]
+hmac = "0.9"
+sha2 = "0.9"
