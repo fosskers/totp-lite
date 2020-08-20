@@ -9,16 +9,28 @@ pub use sha2::{Sha256, Sha512};
 
 // TODO Make `no-std`!
 
-const STEP: u64 = 30; // 30 seconds.
+/// 30 seconds.
+pub const DEFAULT_STEP: u64 = 30;
+
+/// 8 digits of output.
+pub const DEFAULT_DIGITS: u32 = 8;
 
 /// Produce a Time-based One-time Password with default settings.
-pub fn totp<H>(digits: u32, secret: &[u8], time: u64) -> String
+pub fn totp<H>(secret: &[u8], time: u64) -> String
+where
+    H: Update + BlockInput + Reset + FixedOutputDirty + Clone + Default,
+{
+    totp_custom::<H>(DEFAULT_STEP, DEFAULT_DIGITS, secret, time)
+}
+
+/// Produce a Time-based One-time Password with full control over algorithm parameters.
+pub fn totp_custom<H>(step: u64, digits: u32, secret: &[u8], time: u64) -> String
 where
     H: Update + BlockInput + Reset + FixedOutputDirty + Clone + Default,
 {
     // Hash the secret and the time together.
     let mut mac: Hmac<H> = Hmac::new_varkey(secret).unwrap();
-    mac.update(&to_bytes(time_factor(time)));
+    mac.update(&to_bytes(time / step));
     let hash: &[u8] = &mac.finalize().into_bytes();
 
     // Magic from the RFC.
@@ -39,25 +51,20 @@ fn to_bytes(n: u64) -> Vec<u8> {
     vec
 }
 
-/// The `T` value required for TOTP.
-fn time_factor(time: u64) -> u64 {
-    time / STEP
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
     fn to_bytes_test() {
-        assert_eq!(vec![0, 0, 0, 0, 0, 0, 0, 1], to_bytes(time_factor(59)));
+        assert_eq!(vec![0, 0, 0, 0, 0, 0, 0, 1], to_bytes(59 / DEFAULT_STEP));
         assert_eq!(
             vec![0, 0, 0, 0, 0x02, 0x35, 0x23, 0xec],
-            to_bytes(time_factor(1111111109))
+            to_bytes(1111111109 / DEFAULT_STEP)
         );
         assert_eq!(
             vec![0, 0, 0, 0, 0x27, 0xbc, 0x86, 0xaa],
-            to_bytes(time_factor(20000000000))
+            to_bytes(20000000000 / DEFAULT_STEP)
         );
     }
 
@@ -76,7 +83,7 @@ mod tests {
         ];
 
         pairs.into_iter().for_each(|(expected, time)| {
-            assert_eq!(expected, totp::<Sha1>(8, secret, time));
+            assert_eq!(expected, totp::<Sha1>(secret, time));
         });
     }
 
@@ -95,7 +102,7 @@ mod tests {
         ];
 
         pairs.into_iter().for_each(|(expected, time)| {
-            assert_eq!(expected, totp::<Sha256>(8, secret, time));
+            assert_eq!(expected, totp::<Sha256>(secret, time));
         });
     }
 
@@ -114,7 +121,7 @@ mod tests {
         ];
 
         pairs.into_iter().for_each(|(expected, time)| {
-            assert_eq!(expected, totp::<Sha512>(8, secret, time));
+            assert_eq!(expected, totp::<Sha512>(secret, time));
         });
     }
 }
