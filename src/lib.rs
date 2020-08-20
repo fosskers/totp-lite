@@ -4,6 +4,7 @@ use core::clone::Clone;
 use core::default::Default;
 use digest::{BlockInput, FixedOutputDirty, Reset, Update};
 use hmac::{Hmac, Mac, NewMac};
+pub use sha1::Sha1;
 pub use sha2::{Sha256, Sha512};
 
 // TODO Make `no-std`!
@@ -61,6 +62,25 @@ mod tests {
     }
 
     #[test]
+    fn totp1_tests() {
+        let secret: &[u8] = b"12345678901234567890";
+        assert_eq!(20, secret.len());
+
+        let pairs = vec![
+            ("94287082", 59),
+            ("07081804", 1111111109),
+            ("14050471", 1111111111),
+            ("89005924", 1234567890),
+            ("69279037", 2000000000),
+            ("65353130", 20000000000),
+        ];
+
+        pairs.into_iter().for_each(|(expected, time)| {
+            assert_eq!(expected, totp::<Sha1>(8, secret, time));
+        });
+    }
+
+    #[test]
     fn totp256_tests() {
         let secret: &[u8] = b"12345678901234567890123456789012";
         assert_eq!(32, secret.len());
@@ -68,6 +88,7 @@ mod tests {
         let pairs = vec![
             ("46119246", 59),
             ("68084774", 1111111109),
+            ("67062674", 1111111111),
             ("91819424", 1234567890),
             ("90698825", 2000000000),
             ("77737706", 20000000000),
@@ -86,6 +107,7 @@ mod tests {
         let pairs = vec![
             ("90693936", 59),
             ("25091201", 1111111109),
+            ("99943326", 1111111111),
             ("93441116", 1234567890),
             ("38618901", 2000000000),
             ("47863826", 20000000000),

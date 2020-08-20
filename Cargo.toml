@@ -7,4 +7,5 @@ edition = "2018"
 [dependencies]
 digest = "0.9"
 hmac = "0.9"
+sha-1 = "0.9"
 sha2 = "0.9"
