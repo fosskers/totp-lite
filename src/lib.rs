@@ -112,7 +112,7 @@ where
         | (((hash[offset + 2] & 0xff) as u64) << 8)
         | ((hash[offset + 3] & 0xff) as u64);
 
-    format!("{:08}", binary % (10_u64.pow(digits)))
+    format!("{:01$}", binary % (10_u64.pow(digits)), digits as usize)
 }
 
 /// Convert a `u64` into its individual bytes.
