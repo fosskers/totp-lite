@@ -116,11 +116,11 @@ where
 }
 
 /// Convert a `u64` into its individual bytes.
-fn to_bytes(n: u64) -> Vec<u8> {
+fn to_bytes(n: u64) -> [u8; 8] {
     let mask = 0x00000000000000ff;
-    let mut vec: Vec<u8> = (0..8).map(|i| (mask & (n >> (i * 8))) as u8).collect();
-    vec.reverse();
-    vec
+    let mut bytes: [u8; 8] = [0; 8];
+    (0..8).for_each(|i| bytes[7 - i] = (mask & (n >> (i * 8))) as u8);
+    bytes
 }
 
 #[cfg(test)]
