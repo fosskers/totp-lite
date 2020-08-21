@@ -29,25 +29,16 @@
 //! For full control over how the algorithm is configured, consider
 //! [`totp_custom`](fn.totp_custom.html).
 //!
-//! # `no_std`
-//!
-//! As-is, this crate satisfies `no_std`. You will need to find the current time
-//! without using `std::time::SystemTime`.
-//!
 //! # Resources
 //! - [RFC6238: TOTP][RFC6238]
 //! - [RFC6238 Errata](https://www.rfc-editor.org/errata_search.php?rfc=6238)
 //!
 //! [RFC6238]: https://tools.ietf.org/html/rfc6238
 
-use core::clone::Clone;
-use core::default::Default;
 use digest::{BlockInput, FixedOutputDirty, Reset, Update};
 use hmac::{Hmac, Mac, NewMac};
 pub use sha1::Sha1;
 pub use sha2::{Sha256, Sha512};
-
-// TODO Make `no-std`!
 
 /// 30 seconds.
 pub const DEFAULT_STEP: u64 = 30;
