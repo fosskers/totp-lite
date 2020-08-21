@@ -31,13 +31,10 @@ assert_eq!(8, result.len());
 For full control over how the algorithm is configured, consider
 [`totp_custom`](fn.totp_custom.html).
 
-## `no_std`
-
-As-is, this crate satisfies `no_std`. You will need to find the current time
-without using `std::time::SystemTime`.
-
 ## Resources
 - [RFC6238: TOTP][RFC6238]
 - [RFC6238 Errata](https://www.rfc-editor.org/errata_search.php?rfc=6238)
 
 [RFC6238]: https://tools.ietf.org/html/rfc6238
+
+License: MIT
