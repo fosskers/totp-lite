@@ -16,3 +16,6 @@ digest = "0.9"
 hmac = "0.9"
 sha-1 = "0.9"
 sha2 = "0.9"
+
+[dev-dependencies]
+version-sync = "0.9"

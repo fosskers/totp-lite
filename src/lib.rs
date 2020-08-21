@@ -35,6 +35,8 @@
 //!
 //! [RFC6238]: https://tools.ietf.org/html/rfc6238
 
+#![doc(html_root_url = "https://docs.rs/totp-lite/1.0.0")]
+
 use digest::{BlockInput, FixedOutputDirty, Reset, Update};
 use hmac::{Hmac, Mac, NewMac};
 pub use sha1::Sha1;
