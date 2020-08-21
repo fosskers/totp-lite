@@ -1,3 +1,5 @@
+[![Workflow Status](https://github.com/fosskers/totp-lite/workflows/Rust/badge.svg)](https://github.com/fosskers/totp-lite/actions?query=workflow%3A%22Rust%22)
+
 # totp-lite
 
 A simple, correct TOTP library.

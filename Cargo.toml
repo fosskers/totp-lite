@@ -12,7 +12,7 @@ keywords = ["authentication", "totp", "otp", "2fa"]
 categories = ["authentication"]
 
 [badges]
-github = { repository = "fosskers/totp-lite", branch = "master" }
+github = { repository = "fosskers/totp-lite", branch = "master", workflow = "Rust" }
 
 [dependencies]
 digest = "0.9"
