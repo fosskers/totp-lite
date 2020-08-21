@@ -11,7 +11,7 @@ specification [RFC6238], along with a simple interface.
 
 ## Usage
 
-The [`totp`](fn.totp.hmtl) function is likely what you need. It uses the
+The [`totp`](fn.totp.html) function is likely what you need. It uses the
 default time step of 30 seconds and produces 8 digits of output:
 
 ```rust
