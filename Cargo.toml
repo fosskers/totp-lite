@@ -3,6 +3,13 @@ name = "totp-lite"
 version = "1.0.0"
 authors = ["Colin Woodbury <colin@fosskers.ca>"]
 edition = "2018"
+description = "A simple, correct TOTP library."
+homepage = "https://github.com/fosskers/totp"
+repository = "https://github.com/fosskers/totp"
+readme = "README.md"
+license = "MIT"
+keywords = ["authentication", "totp", "otp", "2fa"]
+categories = ["authentication"]
 
 [dependencies]
 digest = "0.9"
