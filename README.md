@@ -11,8 +11,8 @@ specification [RFC6238], along with a simple interface.
 
 ## Usage
 
-The [`totp`](fn.totp.html) function is likely what you need. It uses the
-default time step of 30 seconds and produces 8 digits of output:
+The `totp` function is likely what you need. It uses the default time step
+of 30 seconds and produces 8 digits of output:
 
 ```rust
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -31,7 +31,7 @@ assert_eq!(8, result.len());
 ```
 
 For full control over how the algorithm is configured, consider
-[`totp_custom`](fn.totp_custom.html).
+`totp_custom`.
 
 ## Resources
 - [RFC6238: TOTP][RFC6238]
