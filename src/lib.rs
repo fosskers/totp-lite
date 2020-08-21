@@ -101,9 +101,9 @@ where
     // Magic from the RFC.
     let offset: usize = (hash.last().unwrap() & 0xf) as usize;
     let binary: u64 = (((hash[offset] & 0x7f) as u64) << 24)
-        | (((hash[offset + 1] & 0xff) as u64) << 16)
-        | (((hash[offset + 2] & 0xff) as u64) << 8)
-        | ((hash[offset + 3] & 0xff) as u64);
+        | ((hash[offset + 1] as u64) << 16)
+        | ((hash[offset + 2] as u64) << 8)
+        | (hash[offset + 3] as u64);
 
     format!("{:01$}", binary % (10_u64.pow(digits)), digits as usize)
 }
