@@ -134,6 +134,19 @@ mod tests {
     }
 
     #[test]
+    fn variable_length() {
+        let secret: &[u8] = b"12345678901234567890123456789012";
+        assert_eq!(
+            "2102975832",
+            totp_custom::<Sha256>(DEFAULT_STEP, 10, secret, 100)
+        );
+        assert_eq!(
+            "975832",
+            totp_custom::<Sha256>(DEFAULT_STEP, 6, secret, 100)
+        );
+    }
+
+    #[test]
     fn totp1_tests() {
         let secret: &[u8] = b"12345678901234567890";
         assert_eq!(20, secret.len());
