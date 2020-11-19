@@ -1,6 +1,6 @@
 [package]
 name = "totp-lite"
-version = "1.0.1"
+version = "1.0.2"
 authors = ["Colin Woodbury <colin@fosskers.ca>"]
 edition = "2018"
 description = "A simple, correct TOTP library."
@@ -16,7 +16,7 @@ github = { repository = "fosskers/totp-lite", branch = "master", workflow = "Rus
 
 [dependencies]
 digest = "0.9"
-hmac = "0.9"
+hmac = "0.10"
 sha-1 = "0.9"
 sha2 = "0.9"
 
