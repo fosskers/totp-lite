@@ -1,4 +1,5 @@
 [![Workflow Status](https://github.com/fosskers/totp-lite/workflows/Rust/badge.svg)](https://github.com/fosskers/totp-lite/actions?query=workflow%3A%22Rust%22)
+[![](https://img.shields.io/crates/v/totp-lite.svg)](https://crates.io/crates/totp-lite)
 
 # totp-lite
 
