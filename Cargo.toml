@@ -1,6 +1,6 @@
 [package]
 name = "totp-lite"
-version = "1.0.2"
+version = "1.0.3"
 authors = ["Colin Woodbury <colin@fosskers.ca>"]
 edition = "2018"
 description = "A simple, correct TOTP library."

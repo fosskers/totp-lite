@@ -1,5 +1,11 @@
 # totp-lite Changelog
 
+## 1.0.3 (2021-05-27)
+
+#### Changed
+
+- Allow `hmac-0.11`.
+
 ## 1.0.2 (2020-11-19)
 
 #### Changed
