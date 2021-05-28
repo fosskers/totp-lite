@@ -94,7 +94,7 @@ where
     H: Update + BlockInput + Reset + FixedOutputDirty + Clone + Default,
 {
     // Hash the secret and the time together.
-    let mut mac: Hmac<H> = Hmac::new_varkey(secret).unwrap();
+    let mut mac: Hmac<H> = Hmac::new_from_slice(secret).unwrap();
     mac.update(&to_bytes(time / step));
     let hash: &[u8] = &mac.finalize().into_bytes();
 
