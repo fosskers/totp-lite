@@ -22,3 +22,4 @@ sha2 = "0.9"
 
 [dev-dependencies]
 version-sync = "0.9"
+koibumi-base32 = "0.0"
