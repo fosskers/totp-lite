@@ -37,8 +37,13 @@
 
 #![doc(html_root_url = "https://docs.rs/totp-lite/1.0.3")]
 
-use digest::{BlockInput, FixedOutputDirty, Reset, Update};
-use hmac::{Hmac, Mac, NewMac};
+use digest::{
+    block_buffer::Eager,
+    core_api::{BlockSizeUser, BufferKindUser, CoreProxy, FixedOutputCore, UpdateCore},
+    generic_array::typenum::{IsLess, Le, NonZero, U256},
+    FixedOutput, HashMarker, Update,
+};
+use hmac::{Hmac, Mac};
 pub use sha1::Sha1;
 pub use sha2::{Sha256, Sha512};
 
@@ -68,7 +73,15 @@ pub const DEFAULT_DIGITS: u32 = 8;
 /// ```
 pub fn totp<H>(secret: &[u8], time: u64) -> String
 where
-    H: Update + BlockInput + Reset + FixedOutputDirty + Clone + Default,
+    H: Update + FixedOutput + CoreProxy,
+    H::Core: HashMarker
+        + UpdateCore
+        + FixedOutputCore
+        + BufferKindUser<BufferKind = Eager>
+        + Default
+        + Clone,
+    <H::Core as BlockSizeUser>::BlockSize: IsLess<U256>,
+    Le<<H::Core as BlockSizeUser>::BlockSize, U256>: NonZero,
 {
     totp_custom::<H>(DEFAULT_STEP, DEFAULT_DIGITS, secret, time)
 }
@@ -91,11 +104,19 @@ where
 /// ```
 pub fn totp_custom<H>(step: u64, digits: u32, secret: &[u8], time: u64) -> String
 where
-    H: Update + BlockInput + Reset + FixedOutputDirty + Clone + Default,
+    H: Update + FixedOutput + CoreProxy,
+    H::Core: HashMarker
+        + UpdateCore
+        + FixedOutputCore
+        + BufferKindUser<BufferKind = Eager>
+        + Default
+        + Clone,
+    <H::Core as BlockSizeUser>::BlockSize: IsLess<U256>,
+    Le<<H::Core as BlockSizeUser>::BlockSize, U256>: NonZero,
 {
     // Hash the secret and the time together.
-    let mut mac: Hmac<H> = Hmac::new_from_slice(secret).unwrap();
-    mac.update(&to_bytes(time / step));
+    let mut mac = <Hmac<H> as Mac>::new_from_slice(secret).unwrap();
+    <Hmac<H> as Update>::update(&mut mac, &to_bytes(time / step));
     let hash: &[u8] = &mac.finalize().into_bytes();
 
     // Magic from the RFC.

@@ -47,7 +47,7 @@ fn main() {
                 // Calculate a 6 digit code.
                 6,
                 // Convert the secret into bytes using base32::decode().
-                &base32::decode(input.trim().to_lowercase().to_string()).unwrap(),
+                &base32::decode(&input.trim().to_lowercase()).unwrap(),
                 // Seconds since the Unix Epoch.
                 seconds,
             )

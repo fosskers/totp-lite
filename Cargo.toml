@@ -15,10 +15,10 @@ categories = ["authentication"]
 github = { repository = "fosskers/totp-lite", branch = "master", workflow = "Rust" }
 
 [dependencies]
-digest = "0.9"
-hmac = "0.11"
-sha-1 = "0.9"
-sha2 = "0.9"
+digest = "0.10"
+hmac = "0.12"
+sha-1 = "0.10"
+sha2 = "0.10"
 
 [dev-dependencies]
 version-sync = "0.9"
