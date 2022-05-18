@@ -1,5 +1,13 @@
 # totp-lite Changelog
 
+## 1.1.0 (2022-05-18)
+
+#### Changed
+
+- Bump cryptography dependencies. This technically alters the user-facing API,
+  but not in way that should affect anyone since it only added a few extra trait
+  contraints.
+
 ## 1.0.3 (2021-05-27)
 
 #### Changed

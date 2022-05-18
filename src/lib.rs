@@ -35,7 +35,7 @@
 //!
 //! [RFC6238]: https://tools.ietf.org/html/rfc6238
 
-#![doc(html_root_url = "https://docs.rs/totp-lite/1.0.3")]
+#![doc(html_root_url = "https://docs.rs/totp-lite/1.1.0")]
 
 use digest::{
     block_buffer::Eager,
