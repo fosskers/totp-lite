@@ -17,7 +17,7 @@ github = { repository = "fosskers/totp-lite", branch = "master", workflow = "Rus
 [dependencies]
 digest = "0.10"
 hmac = "0.12"
-sha-1 = "0.10"
+sha1 = "0.10"
 sha2 = "0.10"
 
 [dev-dependencies]
