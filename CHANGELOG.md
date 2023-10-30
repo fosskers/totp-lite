@@ -1,5 +1,11 @@
 # totp-lite Changelog
 
+## 2.0.1 (2023-10-30)
+
+#### Changed
+
+- Switch to `sha1` to `sha-1`, which was deprecated. 
+
 ## 2.0.0 (2022-05-19)
 
 #### Changed
